@@ -19,6 +19,17 @@ Een moderne, mobiel-vriendelijke web dashboard voor Home Assistant. Verbindt met
 3. Klik op **Connect**
 4. Gebruik het **oogje** rechtsboven om te selecteren welke entities je wilt zien
 
+## Installatie via Proxmox LXC (Geautomatiseerd)
+
+Je kunt dit dashboard binnen enkele seconden installeren als een lichte Alpine Linux container op je Proxmox server.
+Open de **Shell** van je Proxmox Node en voer dit commando uit:
+
+```bash
+wget -O- https://raw.githubusercontent.com/doublesytems/hoas-dash/main/proxmox-install.sh | bash
+```
+
+Wanneer het script klaar is, toont het op welk IP-adres je nieuwe dashboard direct bereikbaar is!
+
 ## Home Assistant CORS configuratie
 
 Voeg het volgende toe aan je `configuration.yaml` als je het dashboard lokaal host:

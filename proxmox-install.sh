@@ -4,21 +4,21 @@ echo "=========================================="
 echo " Home Assistant Dashboard LXC Installer"
 echo "=========================================="
 
-# Stop bij errors
+# Stop on errors
 set -e
 
-# Controleer root
+# Check if running as root
 if [ "$EUID" -ne 0 ]; then
-  echo "❌ Run dit script als root op de Proxmox host."
+  echo "❌ Please run this script as root on your Proxmox host."
   exit 1
 fi
 
-# Config
+# Configuration
 STORAGE="local-lvm"
 HOSTNAME="hoas-dash"
 DISK_SIZE="2"
 
-# Next container ID
+# Get next available Container ID
 CTID=$(pvesh get /cluster/nextid)
 
 echo "-> Container ID: $CTID"
@@ -26,15 +26,15 @@ echo "-> Container ID: $CTID"
 echo "-> Updating template list..."
 pveam update >/dev/null
 
-# Zoek nieuwste Alpine template
+# Find latest Alpine template
 TEMPLATE=$(pveam available -section system | awk '/alpine.*default/ {print $2}' | sort -V | tail -n 1)
 
 if [ -z "$TEMPLATE" ]; then
-  echo "❌ Geen Alpine template gevonden"
+  echo "❌ No Alpine template found"
   exit 1
 fi
 
-echo "-> Downloading template $TEMPLATE"
+echo "-> Downloading template: $TEMPLATE"
 pveam download local $TEMPLATE >/dev/null
 
 FULL_TEMPLATE="local:vztmpl/$(basename $TEMPLATE)"
@@ -80,7 +80,7 @@ rc-update add lighttpd default
 rc-service lighttpd start
 "
 
-echo "-> Waiting for IP..."
+echo "-> Waiting for IP assignment..."
 
 IP=""
 for i in {1..30}; do

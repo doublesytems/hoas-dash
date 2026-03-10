@@ -1,86 +1,86 @@
 # Home Assistant Dashboard
 
-Een snelle, mobiel-vriendelijke **read-only** web dashboard voor Home Assistant. Verbindt met de Home Assistant REST API en toont entiteiten in een strak glassmorphism dark mode ontwerp.
+A fast, mobile-friendly **read-only** web dashboard for Home Assistant. Connects to the Home Assistant REST API and displays entities in a sleek glassmorphism dark mode design.
 
-## ✨ Functies
+## ✨ Features
 
-- 🔌 Verbinding via Home Assistant URL + Long-Lived Access Token
-- 🌡️ Temperatuursensoren, vochtigheid, energie, lampen, schakelaars, ventilatoren en meer
-- ⭐ Favorieten — markeer entiteiten en zet ze bovenaan het dashboard
-- 👁️ Zelf kiezen welke entiteiten zichtbaar zijn (opgeslagen in localStorage)
-- 🔍 Zoekfunctie + filter op domein in de entity-selector
-- 📈 Mini grafieken op sensoren (laatste 24 uur via HA History API)
-- ⚠️ Alertbalk voor onbeschikbare apparaten, open deuren, hoge temperaturen
-- ☀️ Weerkaart als er een `weather.*` entiteit aanwezig is
-- 📱 Tablet/Kiosk modus — volledig scherm zonder header, grote kaarten
-- 🚫 Puur weergave (read-only) — geen bediening van apparaten
-- 🔄 Auto-refresh elke 5 seconden
-- ⏸️ Pauzeren bij inactief tabblad (performance optimalisatie)
-- 🌙 Glassmorphism dark mode design
+- 🔌 Connect via Home Assistant URL + Long-Lived Access Token
+- 🌡️ Support for temperature sensors, humidity, energy, lights, switches, fans, and more
+- ⭐ Favorites — mark entities to pin them to the top of the dashboard
+- 👁️ Visibility Control — choose which entities to show (saved in localStorage)
+- 🔍 Search functionality + domain filters in the entity selector
+- 📈 Mini Charts for sensors (last 24 hours via HA History API)
+- ⚠️ Alert Bar for unavailable devices, open doors, or high temperatures
+- ☀️ Weather Card — dedicated display if a `weather.*` entity is selected
+- 📱 Tablet/Kiosk Mode — fullscreen layout with larger cards and hidden header
+- 🚫 Pure Monitoring (read-only) — no device control for maximum safety
+- 🔄 Auto-refresh every 5 seconds
+- ⏸️ Tab Visibility Handling — pauses updates when the tab is inactive
+- 🌙 Glassmorphism Dark Mode design with modern CSS effects
 
-## 📁 Projectstructuur
+## 📁 Project Structure
 
 ```
 hoas-dash/
-├── index.html          # Hoofd HTML layout
+├── index.html          # Main HTML layout
 ├── css/
 │   └── main.css        # Styling (glassmorphism, dark mode, grid)
 ├── js/
-│   ├── app.js          # Startpunt (laadt modules)
-│   ├── api.js          # Home Assistant REST API laag
-│   ├── store.js        # Persistente opslag (localStorage)
-│   └── ui.js           # UI beheer, kaarten, modals, grafieken
-├── proxmox-install.sh  # Geautomatiseerd installatiescript voor Proxmox
+│   ├── app.js          # Entry point (module loader)
+│   ├── api.js          # Home Assistant REST API layer
+│   ├── store.js        # Persistence layer (localStorage)
+│   └── ui.js           # UI logic, card rendering, modals, charts
+├── proxmox-install.sh  # Automated installation script for Proxmox
 └── README.md
 ```
 
-## 🚀 Gebruik
+## 🚀 Getting Started
 
-1. Open `index.html` via een lokale webserver (bijv. `npx serve`)
-2. Voer je Home Assistant URL en een Long-Lived Access Token in
-3. Klik op **Connect**
-4. Klik op het **tandwiel** ⚙️ rechtsboven om te selecteren welke entiteiten je wilt zien
-5. Gebruik het **ster-icoontje** op kaarten om entiteiten als favoriet te markeren
+1. Open `index.html` through a local web server (e.g., `npx serve`)
+2. Enter your Home Assistant URL and a Long-Lived Access Token
+3. Click **Connect**
+4. Click the **gear icon** ⚙️ in the top right to select which entities you want to display
+5. Use the **star icon** on cards to mark entities as favorites
 
-> **Let op:** Entiteiten zijn standaard verborgen. Je moet ze handmatig aanzetten via het instellingen-tandwiel.
+> **Note:** All entities are hidden by default. Use the settings menu to toggle visibility for the ones you need.
 
-## 🖥️ Installatie via Proxmox LXC (Geautomatiseerd)
+## 🖥️ Proxmox LXC Installation (Automated)
 
-Installeer dit dashboard in één commando als lichte Alpine Linux container op je Proxmox server.
+Deploy this dashboard with a single command as a lightweight Alpine Linux container on your Proxmox server.
 
-Open de **Shell** van je Proxmox Node en voer uit:
+Open the **Shell** of your Proxmox Node and run:
 
 ```bash
 wget -O- https://raw.githubusercontent.com/doublesytems/hoas-dash/main/proxmox-install.sh | bash
 ```
 
-Wanneer het script klaar is, toont het het IP-adres waarop het dashboard bereikbaar is.
+Once the script completes, it will display the IP address where your dashboard is accessible.
 
-### Dashboard updaten na een GitHub push
+### Updating the Dashboard after a GitHub push
 
 ```bash
 pct exec <Container-ID> -- sh -c "cd /var/www/localhost/htdocs && git reset --hard origin/main && git pull"
 ```
 
-## 🔑 Token aanmaken
+## 🔑 Creating a Token
 
-Ga in Home Assistant naar **Profiel → Long-Lived Access Tokens → Create Token** en kopieer de gegenereerde sleutel.
+In Home Assistant, go to **Profile → Long-Lived Access Tokens → Create Token** and copy the generated key.
 
-## 🌐 Home Assistant CORS configuratie
+## 🌐 Home Assistant CORS Configuration
 
-Als je het dashboard op een ander adres dan je HA server host, voeg dan het volgende toe aan `configuration.yaml`:
+If you host the dashboard on a different IP/domain than your HA server, you must add the following to your `configuration.yaml`:
 
 ```yaml
 http:
   cors_allowed_origins:
-    - http://<IP-VAN-JE-DASHBOARD>
+    - http://<YOUR-DASHBOARD-IP>
 ```
 
-Herstart daarna Home Assistant.
+Restart Home Assistant after making these changes.
 
-## 🛠️ Technologie
+## 🛠️ Technology Stack
 
 - Vanilla HTML, CSS, JavaScript (ES Modules)
-- Glassmorphism design met CSS custom properties
+- Glassmorphism design using CSS Custom Properties
 - Home Assistant REST API + History API
-- Geen externe dependencies of frameworks nodig
+- No external dependencies or frameworks required

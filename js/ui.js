@@ -242,7 +242,7 @@ export class UIManager {
         return `
             <div class="card-header">
                <div class="card-icon" id="icon-${sid}">${icon}</div>
-               <button class="fav-btn ${isFav ? 'active' : ''}" data-id="${eid}" title="Favoriet">
+               <button class="fav-btn ${isFav ? 'active' : ''}" data-id="${eid}" title="Favorite">
                    ${isFav ? this.svgIcons.star_filled : this.svgIcons.star}
                </button>
             </div>
@@ -283,7 +283,7 @@ export class UIManager {
                         <div class="card-title">${entity.attributes.friendly_name || eid}</div>
                         <div class="card-value">${entity.attributes.temperature || ''} ${entity.attributes.temperature_unit || ''}</div>
                         <div style="font-size:0.8rem;color:var(--text-secondary);">
-                            ${entity.state} &nbsp;|&nbsp; Vochtigheid: ${entity.attributes.humidity || 0}% &nbsp;|&nbsp; Wind: ${entity.attributes.wind_speed || 0}
+                            ${entity.state} &nbsp;|&nbsp; Humidity: ${entity.attributes.humidity || 0}% &nbsp;|&nbsp; Wind: ${entity.attributes.wind_speed || 0}
                         </div>
                     </div>
                 `;

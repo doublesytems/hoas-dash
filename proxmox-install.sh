@@ -56,6 +56,9 @@ pct create $CTID $FULL_TEMPLATE \
 echo "-> Starting container..."
 pct start $CTID
 
+# Wacht tot container klaar is
+sleep 2
+
 echo "-> Installing packages..."
 
 pct exec $CTID -- sh -c "
@@ -67,7 +70,7 @@ echo "-> Installing dashboard..."
 
 pct exec $CTID -- sh -c "
 rm -rf /var/www/localhost/htdocs
-git clone https://github.com/doublesystems/hoas-dash.git /var/www/localhost/htdocs
+git clone https://github.com/doublesytems/hoas-dash.git /var/www/localhost/htdocs
 "
 
 echo "-> Enabling webserver..."
@@ -79,18 +82,26 @@ rc-service lighttpd start
 
 echo "-> Waiting for IP..."
 
+IP=""
 for i in {1..30}; do
-IP=$(pct exec $CTID -- ip -4 addr show eth0 | awk '/inet / {print \$2}' | cut -d/ -f1 | head -n1)
-if [ ! -z "$IP" ]; then
-break
-fi
-sleep 2
+  IP=$(pct exec $CTID -- ip -4 addr show eth0 | awk '/inet / {print $2}' | cut -d/ -f1 | head -n1)
+  if [ -n "$IP" ]; then
+    break
+  fi
+  sleep 2
 done
 
 echo ""
 echo "=========================================="
-echo "✅ Dashboard Container Ready"
-echo "Container ID: $CTID"
-echo "Dashboard URL:"
-echo "http://$IP"
+if [ -n "$IP" ]; then
+  echo "✅ Dashboard Container Ready"
+  echo "Container ID: $CTID"
+  echo "Dashboard URL:"
+  echo "http://$IP"
+else
+  echo "⚠️  Dashboard Container Created"
+  echo "Container ID: $CTID"
+  echo "Note: Could not retrieve IP automatically."
+  echo "Check container status with: pct list"
+fi
 echo "=========================================="

@@ -13,29 +13,29 @@ export class UIManager {
             dashboard: document.getElementById('dashboard-screen')
         };
         this.containers = {
-            alerts:    document.getElementById('alert-bar'),
+            alerts: document.getElementById('alert-bar'),
             favorites: document.getElementById('favorites-container'),
-            weather:   document.getElementById('weather-container'),
-            lights:    document.getElementById('lights-container'),
-            sensors:   document.getElementById('sensors-container'),
-            climate:   document.getElementById('climate-container'),
-            other:     document.getElementById('other-container')
+            weather: document.getElementById('weather-container'),
+            lights: document.getElementById('lights-container'),
+            sensors: document.getElementById('sensors-container'),
+            climate: document.getElementById('climate-container'),
+            other: document.getElementById('other-container')
         };
 
         this.svgIcons = {
-            light:          `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`,
-            switch:         `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`,
-            sensor_temp:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>`,
-            sensor_humidity:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>`,
-            sensor_energy:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
+            light: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`,
+            switch: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`,
+            sensor_temp: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>`,
+            sensor_humidity: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>`,
+            sensor_energy: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
             sensor_generic: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
-            fan:            `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c-3-3-2-8 2-8s5 5 2 8c3 3 8 2 8-2-5-5-8-2-8 2z"/><path d="M12 12c3 3 2 8-2 8s-5-5-2-8c-3-3-8-2-8 2 5 5 8 2 8-2z"/></svg>`,
-            weather:        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19C19.985 19 22 16.985 22 14.5C22 12.185 20.246 10.283 18 10.046C17.5 7.18 15.008 5 12 5C8.686 5 6 7.686 6 11C3.239 11 1 13.239 1 16C1 18.761 3.239 21 6 21H17.5Z"/></svg>`,
-            person_home:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`,
-            person_away:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`,
-            star:           `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`,
-            star_filled:    `<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`,
-            warning:        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`
+            fan: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c-3-3-2-8 2-8s5 5 2 8c3 3 8 2 8-2-5-5-8-2-8 2z"/><path d="M12 12c3 3 2 8-2 8s-5-5-2-8c-3-3-8-2-8 2 5 5 8 2 8-2z"/></svg>`,
+            weather: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19C19.985 19 22 16.985 22 14.5C22 12.185 20.246 10.283 18 10.046C17.5 7.18 15.008 5 12 5C8.686 5 6 7.686 6 11C3.239 11 1 13.239 1 16C1 18.761 3.239 21 6 21H17.5Z"/></svg>`,
+            person_home: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`,
+            person_away: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`,
+            star: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`,
+            star_filled: `<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`,
+            warning: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`
         };
 
         // Bind methods that are used as callbacks so `this` is preserved
@@ -51,7 +51,7 @@ export class UIManager {
 
     setupEventListeners() {
         document.getElementById('save-config-btn').addEventListener('click', () => {
-            const url   = document.getElementById('ha-url').value.trim().replace(/\/$/, '');
+            const url = document.getElementById('ha-url').value.trim().replace(/\/$/, '');
             const token = document.getElementById('ha-token').value.trim();
             if (!url || !token) return;
             this.store.saveConfig(url, token);
@@ -85,8 +85,8 @@ export class UIManager {
         document.getElementById('export-settings-btn').addEventListener('click', () => {
             const json = this.store.exportSettings();
             const blob = new Blob([json], { type: 'application/json' });
-            const url  = URL.createObjectURL(blob);
-            const a    = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
             a.href = url;
             a.download = `ha-dash-backup-${new Date().toISOString().split('T')[0]}.json`;
             a.click();
@@ -94,7 +94,7 @@ export class UIManager {
         });
 
         document.getElementById('import-settings-btn').addEventListener('click', () => {
-           document.getElementById('import-file-input').click();
+            document.getElementById('import-file-input').click();
         });
 
         document.getElementById('import-file-input').addEventListener('change', (e) => {
@@ -186,10 +186,16 @@ export class UIManager {
     }
 
     checkStateForAlerts(state, alerts) {
-        if (!this.store.visibleEntities.includes(state.entity_id)) return;
+        const config = this.store.visibleEntities.find(e => e.id === state.entity_id);
+        if (!config) return;
+
+        const isHighPriority = config.priority === 1;
 
         if (state.state === 'unavailable' || state.state === 'unknown') {
-            alerts.push({ msg: `${state.attributes.friendly_name || state.entity_id} is unavailable.` });
+            alerts.push({
+                msg: `${state.attributes.friendly_name || state.entity_id} is unavailable.`,
+                priority: config.priority
+            });
         }
 
         const domain = state.entity_id.split('.')[0];
@@ -204,16 +210,22 @@ export class UIManager {
         if (domain === 'binary_sensor' && state.state === 'on') {
             const dc = state.attributes.device_class;
             if (['door', 'window', 'garage_door'].includes(dc)) {
-                alerts.push({ msg: `${state.attributes.friendly_name || state.entity_id} is Open!` });
+                alerts.push({
+                    msg: `${state.attributes.friendly_name || state.entity_id} is Open!`,
+                    priority: config.priority
+                });
             }
         }
     }
 
     renderAlerts(alerts) {
         this.containers.alerts.innerHTML = '';
+        // Sort alerts by priority (High first)
+        alerts.sort((a, b) => b.priority - a.priority);
+
         alerts.forEach(a => {
             const div = document.createElement('div');
-            div.className = 'alert-item';
+            div.className = `alert-item ${a.priority === 1 ? 'priority-high' : ''}`;
             div.innerHTML = `${this.svgIcons.warning} ${a.msg}`;
             this.containers.alerts.appendChild(div);
         });
@@ -230,7 +242,7 @@ export class UIManager {
             return entity.state === 'home' ? this.svgIcons.person_home : this.svgIcons.person_away;
         if (domain === 'sensor') {
             if (dc === 'temperature') return this.svgIcons.sensor_temp;
-            if (dc === 'humidity')    return this.svgIcons.sensor_humidity;
+            if (dc === 'humidity') return this.svgIcons.sensor_humidity;
             if (dc === 'energy' || dc === 'power') return this.svgIcons.sensor_energy;
         }
         return this.svgIcons.sensor_generic;
@@ -238,10 +250,10 @@ export class UIManager {
 
     getHighlightClass(entity) {
         const domain = entity.entity_id.split('.')[0];
-        const dc     = entity.attributes.device_class;
-        const state  = entity.state;
+        const dc = entity.attributes.device_class;
+        const state = entity.state;
         if (state === 'unavailable' || state === 'unknown') return 'is-warning';
-        if (['light', 'switch', 'fan'].includes(domain))    return state === 'on' ? 'is-on' : '';
+        if (['light', 'switch', 'fan'].includes(domain)) return state === 'on' ? 'is-on' : '';
         if (domain === 'sensor' && dc === 'temperature') {
             const val = parseFloat(state);
             if (!isNaN(val)) {
@@ -255,17 +267,17 @@ export class UIManager {
     formatTime(dateStr) {
         try {
             const d = new Date(dateStr);
-            return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+            return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}:${String(d.getSeconds()).padStart(2, '0')}`;
         } catch { return ''; }
     }
 
     buildCardHtml(entity) {
-        const eid   = entity.entity_id;
-        const sid   = this.safeId(eid);          // safe DOM id
-        const name  = entity.attributes.friendly_name || eid;
+        const eid = entity.entity_id;
+        const sid = this.safeId(eid);          // safe DOM id
+        const name = entity.attributes.friendly_name || eid;
         const state = entity.state;
-        const unit  = entity.attributes.unit_of_measurement || '';
-        const icon  = this.getIconForEntity(entity);
+        const unit = entity.attributes.unit_of_measurement || '';
+        const icon = this.getIconForEntity(entity);
         const isFav = this.store.favorites.includes(eid);
         const hasChart = eid.startsWith('sensor.') && entity.attributes.state_class === 'measurement';
 
@@ -293,15 +305,22 @@ export class UIManager {
         let hasFavs = false, hasWeather = false, hasLights = false,
             hasSensors = false, hasClimate = false, hasOther = false;
 
-        this.store.visibleEntities.forEach(eid => {
+        // Sort by priority then custom order
+        const sortedEntities = [...this.store.visibleEntities].sort((a, b) => {
+            if (b.priority !== a.priority) return b.priority - a.priority;
+            return a.order - b.order;
+        });
+
+        sortedEntities.forEach(item => {
+            const eid = item.id;
             const entity = statesMap[eid];
             if (!entity) return;
 
             const domain = eid.split('.')[0];
-            const isFav  = this.store.favorites.includes(eid);
+            const isFav = this.store.favorites.includes(eid);
 
             const card = document.createElement('div');
-            card.id        = `card-${this.safeId(eid)}`;
+            card.id = `card-${this.safeId(eid)}`;
             card.className = `glass-card ${this.getHighlightClass(entity)}`.trim();
 
             if (domain === 'weather' && !isFav) {
@@ -348,32 +367,32 @@ export class UIManager {
             }
         });
 
-        document.getElementById('section-favorites').style.display = hasFavs    ? 'flex' : 'none';
-        document.getElementById('section-weather').style.display   = hasWeather ? 'flex' : 'none';
-        document.getElementById('section-lights').style.display    = hasLights  ? 'flex' : 'none';
-        document.getElementById('section-sensors').style.display   = hasSensors ? 'flex' : 'none';
-        document.getElementById('section-climate').style.display   = hasClimate ? 'flex' : 'none';
-        document.getElementById('section-other').style.display     = hasOther   ? 'flex' : 'none';
+        document.getElementById('section-favorites').style.display = hasFavs ? 'flex' : 'none';
+        document.getElementById('section-weather').style.display = hasWeather ? 'flex' : 'none';
+        document.getElementById('section-lights').style.display = hasLights ? 'flex' : 'none';
+        document.getElementById('section-sensors').style.display = hasSensors ? 'flex' : 'none';
+        document.getElementById('section-climate').style.display = hasClimate ? 'flex' : 'none';
+        document.getElementById('section-other').style.display = hasOther ? 'flex' : 'none';
 
         setTimeout(() => this.loadCharts(statesMap), 600);
     }
 
     patchRender(statesMap) {
         this.store.visibleEntities.forEach(eid => {
-            const entity    = statesMap[eid];
+            const entity = statesMap[eid];
             const oldEntity = this.currentStates[eid];
             if (!entity || !oldEntity) return;
             if (entity.state === oldEntity.state && entity.last_updated === oldEntity.last_updated) return;
 
-            const sid  = this.safeId(eid);
+            const sid = this.safeId(eid);
             const card = document.getElementById(`card-${sid}`);
             if (!card) return;
 
             card.className = `glass-card ${this.getHighlightClass(entity)}`.trim();
 
-            const txtEl  = document.getElementById(`txt-${sid}`);
+            const txtEl = document.getElementById(`txt-${sid}`);
             const timeEl = document.getElementById(`time-${sid}`);
-            if (txtEl)  txtEl.textContent  = entity.state;
+            if (txtEl) txtEl.textContent = entity.state;
             if (timeEl) timeEl.textContent = this.formatTime(entity.last_updated);
 
             const domain = eid.split('.')[0];
@@ -389,7 +408,7 @@ export class UIManager {
             const entity = statesMap[eid];
             if (!entity || entity.attributes.state_class !== 'measurement') continue;
 
-            const sid  = this.safeId(eid);
+            const sid = this.safeId(eid);
             const chartEl = document.getElementById(`chart-${sid}`);
             if (!chartEl) continue;
 
@@ -439,18 +458,55 @@ export class UIManager {
         });
 
         allEntities.forEach(entity => {
-            const domain    = entity.entity_id.split('.')[0];
-            const isChecked = this.store.visibleEntities.includes(entity.entity_id);
-            const name      = entity.attributes.friendly_name || entity.entity_id;
-            const sid       = this.safeId(entity.entity_id);
+            const domain = entity.entity_id.split('.')[0];
+            const entityConfig = this.store.visibleEntities.find(e => e.id === entity.entity_id);
+            const isChecked = !!entityConfig;
+            const priority = entityConfig ? entityConfig.priority : 0;
+            const name = entity.attributes.friendly_name || entity.entity_id;
+            const sid = this.safeId(entity.entity_id);
 
             const div = document.createElement('div');
-            div.className = 'entity-list-item';
+            div.className = `entity-list-item ${isChecked ? 'is-selected' : ''}`;
+            div.setAttribute('draggable', 'true');
+            div.dataset.id = entity.entity_id;
+
             div.innerHTML = `
+                <div class="drag-handle">≡</div>
                 <input type="checkbox" id="chk-${sid}" value="${entity.entity_id}" ${isChecked ? 'checked' : ''}>
                 <label for="chk-${sid}" style="cursor:pointer;flex:1;">${name}</label>
+                <div class="priority-toggle ${priority === 1 ? 'high' : ''}" title="Priority: ${priority === 1 ? 'High' : 'Normal'}">
+                    ${priority === 1 ? 'High' : 'Normal'}
+                </div>
                 <div class="status-badge">${domain}</div>
             `;
+
+            // Drag and drop handlers
+            div.addEventListener('dragstart', e => {
+                e.dataTransfer.setData('text/plain', entity.entity_id);
+                div.classList.add('dragging');
+            });
+            div.addEventListener('dragend', () => div.classList.remove('dragging'));
+            div.addEventListener('dragover', e => {
+                e.preventDefault();
+                const dragging = document.querySelector('.dragging');
+                if (!dragging || dragging === div) return;
+                const bounding = div.getBoundingClientRect();
+                const offset = e.clientY - bounding.top;
+                if (offset > bounding.height / 2) {
+                    div.after(dragging);
+                } else {
+                    div.before(dragging);
+                }
+            });
+
+            // Priority toggle hander
+            div.querySelector('.priority-toggle').addEventListener('click', e => {
+                const btn = e.target;
+                const isHigh = btn.classList.toggle('high');
+                btn.textContent = isHigh ? 'High' : 'Normal';
+                btn.title = `Priority: ${isHigh ? 'High' : 'Normal'}`;
+            });
+
             listDiv.appendChild(div);
         });
 
@@ -474,22 +530,30 @@ export class UIManager {
     }
 
     filterModalList() {
-        const query       = (document.getElementById('modal-search')?.value || '').toLowerCase();
-        const activeChip  = document.querySelector('.filter-chip.active');
+        const query = (document.getElementById('modal-search')?.value || '').toLowerCase();
+        const activeChip = document.querySelector('.filter-chip.active');
         const domainFilter = activeChip ? activeChip.dataset.domain : 'all';
 
         document.querySelectorAll('#entity-selection-list .entity-list-item').forEach(item => {
-            const lbl    = item.querySelector('label')?.textContent?.toLowerCase() || '';
-            const type   = item.querySelector('.status-badge')?.textContent || '';
-            const show   = lbl.includes(query) && (domainFilter === 'all' || type === domainFilter);
+            const lbl = item.querySelector('label')?.textContent?.toLowerCase() || '';
+            const type = item.querySelector('.status-badge')?.textContent || '';
+            const show = lbl.includes(query) && (domainFilter === 'all' || type === domainFilter);
             item.style.display = show ? 'flex' : 'none';
         });
     }
 
     saveEntitySelection() {
         const selected = [];
-        document.querySelectorAll('#entity-selection-list input[type="checkbox"]').forEach(inp => {
-            if (inp.checked) selected.push(inp.value);
+        document.querySelectorAll('#entity-selection-list .entity-list-item').forEach((item, index) => {
+            const chk = item.querySelector('input[type="checkbox"]');
+            if (chk.checked) {
+                const priority = item.querySelector('.priority-toggle').classList.contains('high') ? 1 : 0;
+                selected.push({
+                    id: chk.value,
+                    priority: priority,
+                    order: index
+                });
+            }
         });
         this.store.saveVisibleEntities(selected);
         document.getElementById('settings-modal').classList.remove('active');

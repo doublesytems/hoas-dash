@@ -3,7 +3,7 @@
 export class Store {
     constructor() {
         this.config = this.loadConfig();
-        this.visibleEntities = this.loadVisibleEntities();
+        this.visibleEntities = this.loadVisibleEntities(); // Array of {id, priority, order}
         this.favorites = this.loadFavorites();
         this.kioskMode = localStorage.getItem('ha_kiosk') === '1';
     }
@@ -30,20 +30,33 @@ export class Store {
     loadVisibleEntities() {
         try {
             const raw = localStorage.getItem('ha_visible');
-            return raw ? JSON.parse(raw) : [];
-        } catch(e) { return []; }
+            if (!raw) return [];
+            const parsed = JSON.parse(raw);
+            // Migration: handle old format [id1, id2] vs new [{id, priority, order}]
+            return parsed.map((item, index) => {
+                if (typeof item === 'string') {
+                    return { id: item, priority: 0, order: index };
+                }
+                return {
+                    priority: 0, // Default
+                    order: index,
+                    ...item
+                };
+            });
+        } catch (e) { return []; }
     }
 
-    saveVisibleEntities(ids) {
-        this.visibleEntities = ids;
-        localStorage.setItem('ha_visible', JSON.stringify(ids));
+    saveVisibleEntities(entities) {
+        // entities is an array of {id, priority, order}
+        this.visibleEntities = entities;
+        localStorage.setItem('ha_visible', JSON.stringify(entities));
     }
 
     loadFavorites() {
         try {
             const raw = localStorage.getItem('ha_favs');
             return raw ? JSON.parse(raw) : [];
-        } catch(e) { return []; }
+        } catch (e) { return []; }
     }
 
     toggleFavorite(id) {

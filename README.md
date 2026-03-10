@@ -4,19 +4,19 @@ A fast, mobile-friendly **read-only** web dashboard for Home Assistant. Connects
 
 ## ✨ Features
 
-- 🔌 Connect via Home Assistant URL + Long-Lived Access Token
-- 🌡️ Support for temperature sensors, humidity, energy, lights, switches, fans, and more
-- ⭐ Favorites — mark entities to pin them to the top of the dashboard
-- 👁️ Visibility Control — choose which entities to show (saved in localStorage)
-- 🔍 Search functionality + domain filters in the entity selector
-- 📈 Mini Charts for sensors (last 24 hours via HA History API)
-- ⚠️ Alert Bar for unavailable devices, open doors, or high temperatures
-- ☀️ Weather Card — dedicated display if a `weather.*` entity is selected
-- 📱 Tablet/Kiosk Mode — fullscreen layout with larger cards and hidden header
-- 🚫 Pure Monitoring (read-only) — no device control for maximum safety
-- 🔄 Auto-refresh every 5 seconds
-- ⏸️ Tab Visibility Handling — pauses updates when the tab is inactive
-- 🌙 Glassmorphism Dark Mode design with modern CSS effects
+- 🔌 **Connect via Home Assistant URL + Long-Lived Access Token**
+- 🌡️ **Comprehensive Entity Support** — temperature sensors, humidity, energy, lights, switches, fans, and more
+- ⭐ **Favorites** — mark entities to pin them to the top of the dashboard
+- 👁️ **Visibility Control** — choose exactly which entities to show (saved in localStorage)
+- 🔍 **Advanced Filtering** — search functionality + domain filters in the entity selector
+- 📉 **Mini Charts** — sparklines for sensors (last 24 hours via HA History API)
+- ⚠️ **Alert Bar** — instant notifications for unavailable devices, open doors, or high temperatures
+- ☀️ **Weather Card** — dedicated display if a `weather.*` entity is selected
+- 📱 **Tablet/Kiosk Mode** — fullscreen layout with larger cards and hidden header for wall-mounted displays
+- 💾 **Backup & Restore** — export and import your dashboard configuration (URL, Token, visibility, favorites) as a JSON file
+- 🚫 **Pure Monitoring** — read-only interface; no accidental device control
+- 🔄 **Auto-refresh** — updates every 5 seconds with tab visibility optimization
+- 🌙 **Glassmorphism Design** — modern, high-performance UI with CSS blur effects
 
 ## 📁 Project Structure
 
@@ -37,10 +37,13 @@ hoas-dash/
 ## 🚀 Getting Started
 
 1. Open `index.html` through a local web server (e.g., `npx serve`)
-2. Enter your Home Assistant URL and a Long-Lived Access Token
+2. Enter your **Home Assistant URL** and a **Long-Lived Access Token**
 3. Click **Connect**
-4. Click the **gear icon** ⚙️ in the top right to select which entities you want to display
-5. Use the **star icon** on cards to mark entities as favorites
+4. Click the **gear icon** ⚙️ in the top right:
+    - Toggle **Visibility** for the entities you want to display
+    - Use **Export** to save your configuration for another device
+    - Use **Import** to restore settings from a backup file
+5. Use the **star icon** on cards to pin entities to your Favorites section
 
 > **Note:** All entities are hidden by default. Use the settings menu to toggle visibility for the ones you need.
 
@@ -68,19 +71,18 @@ In Home Assistant, go to **Profile → Long-Lived Access Tokens → Create Token
 
 ## 🌐 Home Assistant CORS Configuration
 
-If you host the dashboard on a different IP/domain than your HA server, you must add the following to your `configuration.yaml`:
+If you host the dashboard on a different IP/domain than your HA server, you must add the following to your `configuration.yaml` and **restart Home Assistant**:
 
 ```yaml
 http:
   cors_allowed_origins:
     - http://<YOUR-DASHBOARD-IP>
+    - http://localhost:8080   # If testing locally
 ```
-
-Restart Home Assistant after making these changes.
 
 ## 🛠️ Technology Stack
 
 - Vanilla HTML, CSS, JavaScript (ES Modules)
 - Glassmorphism design using CSS Custom Properties
 - Home Assistant REST API + History API
-- No external dependencies or frameworks required
+- Zero external dependencies or frameworks

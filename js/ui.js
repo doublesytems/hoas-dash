@@ -77,6 +77,11 @@ export class UIManager {
             document.body.classList.toggle('kiosk-mode', isKiosk);
         });
 
+        document.getElementById('exit-kiosk-btn').addEventListener('click', () => {
+            const isKiosk = this.store.toggleKiosk();
+            document.body.classList.toggle('kiosk-mode', isKiosk);
+        });
+
         if (this.store.kioskMode) {
             document.body.classList.add('kiosk-mode');
         }

@@ -450,6 +450,33 @@ body.kiosk-mode header { display: none; }
 body.kiosk-mode .cards-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; }
 body.kiosk-mode .glass-card { min-height: 150px; }
 body.kiosk-mode .card-value { font-size: 1.7rem; }
+body.kiosk-mode .floating-btn { display: flex !important; }
+
+/* ─── Floating Button ─────────────────────────────────── */
+.floating-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1000;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: var(--blur);
+    border: 1px solid var(--glass-border);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    transition: background 0.2s, transform 0.2s, opacity 0.3s;
+    opacity: 0.3; /* Subtle by default */
+}
+.floating-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.1);
+    opacity: 1;
+}
 
 /* ─── Responsive ─────────────────────────────────────── */
 @media (max-width: 480px) {

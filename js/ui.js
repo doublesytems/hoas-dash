@@ -209,12 +209,21 @@ export class UIManager {
 
         if (domain === 'binary_sensor' && state.state === 'on') {
             const dc = state.attributes.device_class;
-            if (['door', 'window', 'garage_door'].includes(dc)) {
+            if (['door', 'window', 'garage_door', 'smoke', 'gas', 'moisture', 'motion'].includes(dc)) {
                 alerts.push({
-                    msg: `${state.attributes.friendly_name || state.entity_id} is Open!`,
+                    msg: `${state.attributes.friendly_name || state.entity_id} is Active!`,
                     priority: config.priority
                 });
+                return; // Avoid double alert if high priority
             }
+        }
+
+        // 3. High Priority 'ON' alerts (for lights, switches, etc.)
+        if (isHighPriority && (state.state === 'on' || state.state === 'home' || state.state === 'open')) {
+            alerts.push({
+                msg: `${state.attributes.friendly_name || state.entity_id} is ${state.state.toUpperCase()}!`,
+                priority: 1
+            });
         }
     }
 
@@ -381,7 +390,8 @@ export class UIManager {
     }
 
     patchRender(statesMap) {
-        this.store.visibleEntities.forEach(eid => {
+        this.store.visibleEntities.forEach(item => {
+            const eid = item.id;
             const entity = statesMap[eid];
             const oldEntity = this.currentStates[eid];
             if (!entity || !oldEntity) return;
@@ -407,7 +417,8 @@ export class UIManager {
     }
 
     async loadCharts(statesMap) {
-        for (const eid of this.store.visibleEntities) {
+        for (const item of this.store.visibleEntities) {
+            const eid = item.id;
             const entity = statesMap[eid];
             if (!entity || entity.attributes.state_class !== 'measurement') continue;
 

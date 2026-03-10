@@ -1,70 +1,96 @@
 #!/bin/bash
-# Run this script directly on your Proxmox Host shell (node shell)
-# It creates a lightweight Alpine Linux LXC, installs a webserver, and downloads your dashboard.
 
 echo "=========================================="
-echo " Setting up Home Assistant Dashboard LXC"
+echo " Home Assistant Dashboard LXC Installer"
 echo "=========================================="
 
-# Get the next available Container ID
-CTID=$(pvesh get /cluster/nextid)
+# Stop bij errors
+set -e
 
-echo "-> Chosen Container ID: $CTID"
-
-# Update Proxmox container templates
-echo "-> Updating Proxmox templates list..."
-pveam update >/dev/null
-
-# Find the latest Alpine Linux template
-TEMPLATE=$(pveam available -section system | grep alpine | grep default | sort -V | tail -n 1 | awk '{print $2}')
-
-if [ -z "$TEMPLATE" ]; then
-    echo "❌ Error: Could not find an Alpine Linux template."
-    exit 1
+# Controleer root
+if [ "$EUID" -ne 0 ]; then
+  echo "❌ Run dit script als root op de Proxmox host."
+  exit
 fi
 
-echo "-> Downloading template: $TEMPLATE"
+# Config
+STORAGE="local-lvm"
+HOSTNAME="hoas-dash"
+DISK_SIZE="2"
+
+# Next container ID
+CTID=$(pvesh get /cluster/nextid)
+
+echo "-> Container ID: $CTID"
+
+echo "-> Updating template list..."
+pveam update >/dev/null
+
+# Zoek nieuwste Alpine template
+TEMPLATE=$(pveam available -section system | awk '/alpine.*default/ {print $2}' | sort -V | tail -n 1)
+
+if [ -z "$TEMPLATE" ]; then
+  echo "❌ Geen Alpine template gevonden"
+  exit 1
+fi
+
+echo "-> Downloading template $TEMPLATE"
 pveam download local $TEMPLATE >/dev/null
 
-STORAGE="local-lvm" # Adjust this if you use another storage pool like 'local-zfs'
-FULL_TEMPLATE_NAME="local:vztmpl/$(basename $TEMPLATE)"
+FULL_TEMPLATE="local:vztmpl/$(basename $TEMPLATE)"
 
-echo "-> Creating LXC Container..."
-pct create $CTID $FULL_TEMPLATE_NAME \
+echo "-> Creating container..."
+
+pct create $CTID $FULL_TEMPLATE \
+  --hostname $HOSTNAME \
   --arch amd64 \
-  --hostname hoas-dash \
   --cores 1 \
   --memory 128 \
   --swap 0 \
+  --rootfs $STORAGE:$DISK_SIZE \
   --net0 name=eth0,bridge=vmbr0,ip=dhcp \
-  --storage $STORAGE \
   --unprivileged 1 \
-  --ostype alpine
+  --ostype alpine \
+  --features nesting=1
 
-echo "-> Starting Container..."
+echo "-> Starting container..."
 pct start $CTID
 
-echo "-> Waiting for network to initialize..."
-sleep 5
+echo "-> Installing packages..."
 
-echo "-> Installing Web Server (lighttpd) and Git..."
-pct exec $CTID -- apk update
-pct exec $CTID -- apk add lighttpd git
+pct exec $CTID -- sh -c "
+apk update
+apk add lighttpd git
+"
 
-echo "-> Downloading Dashboard from GitHub..."
-pct exec $CTID -- rm -rf /var/www/localhost/htdocs
-pct exec $CTID -- git clone https://github.com/doublesytems/hoas-dash.git /var/www/localhost/htdocs
+echo "-> Installing dashboard..."
 
-echo "-> Starting Web Server..."
-pct exec $CTID -- rc-update add lighttpd default
-pct exec $CTID -- rc-service lighttpd start
+pct exec $CTID -- sh -c "
+rm -rf /var/www/localhost/htdocs
+git clone https://github.com/doublesystems/hoas-dash.git /var/www/localhost/htdocs
+"
 
-# Get the IP address
-IP=$(pct exec $CTID -- ip -4 addr show eth0 | awk '/inet / {print $2}' | cut -d/ -f1 | head -n 1)
+echo "-> Enabling webserver..."
+
+pct exec $CTID -- sh -c "
+rc-update add lighttpd default
+rc-service lighttpd start
+"
+
+echo "-> Waiting for IP..."
+
+for i in {1..30}; do
+IP=$(pct exec $CTID -- ip -4 addr show eth0 | awk '/inet / {print \$2}' | cut -d/ -f1 | head -n1)
+if [ ! -z "$IP" ]; then
+break
+fi
+sleep 2
+done
 
 echo ""
-echo "==========================================================="
-echo "✅ LXC Container Created Successfully!"
-echo "🌐 Je dashboard is nu te bereiken op: http://$IP"
-echo "🆔 Proxmox Container ID: $CTID"
-echo "==========================================================="
+echo "=========================================="
+echo "✅ Dashboard Container Ready"
+echo "Container ID: $CTID"
+echo "Dashboard URL:"
+echo "http://$IP"
+echo "=========================================="

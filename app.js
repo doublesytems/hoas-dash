@@ -414,37 +414,3 @@ function filterEntityList() {
 // Boot up
 document.addEventListener('DOMContentLoaded', init);
 
-// Temporary click debugger
-document.addEventListener('click', (e) => {
-    let debugOverlay = document.getElementById('debug-click-overlay');
-    if (!debugOverlay) {
-        debugOverlay = document.createElement('div');
-        debugOverlay.id = 'debug-click-overlay';
-        debugOverlay.style.position = 'fixed';
-        debugOverlay.style.bottom = '10px';
-        debugOverlay.style.left = '10px';
-        debugOverlay.style.background = 'rgba(255,0,0,0.8)';
-        debugOverlay.style.color = 'white';
-        debugOverlay.style.padding = '10px';
-        debugOverlay.style.zIndex = '9999';
-        debugOverlay.style.borderRadius = '5px';
-        debugOverlay.style.fontFamily = 'monospace';
-        document.body.appendChild(debugOverlay);
-    }
-    
-    // Find closest parent with an ID to understand what we actually hit
-    let target = e.target;
-    let path = [];
-    while (target && target !== document.body) {
-        let identifier = target.tagName.toLowerCase();
-        if (target.id) identifier += '#' + target.id;
-        if (target.className && typeof target.className === 'string') {
-             identifier += '.' + target.className.split(' ').join('.');
-        }
-        path.push(identifier);
-        target = target.parentElement;
-    }
-    
-    debugOverlay.innerHTML = 'Clicked:<br>' + path.join('<br>&uarr;<br>');
-    console.log("CLICK TRACE:", path);
-});

@@ -10,7 +10,7 @@ set -e
 # Controleer root
 if [ "$EUID" -ne 0 ]; then
   echo "❌ Run dit script als root op de Proxmox host."
-  exit
+  exit 1
 fi
 
 # Config
@@ -56,7 +56,7 @@ pct create $CTID $FULL_TEMPLATE \
 echo "-> Starting container..."
 pct start $CTID
 
-# Wacht tot container klaar is
+# Wait for container to stabilize
 sleep 2
 
 echo "-> Installing packages..."
@@ -99,9 +99,8 @@ if [ -n "$IP" ]; then
   echo "Dashboard URL:"
   echo "http://$IP"
 else
-  echo "⚠️  Dashboard Container Created"
+  echo "⚠️  Container Created (IP not assigned yet)"
   echo "Container ID: $CTID"
-  echo "Note: Could not retrieve IP automatically."
-  echo "Check container status with: pct list"
+  echo "Check IP manually with: pct exec $CTID -- ip -4 addr show eth0"
 fi
 echo "=========================================="

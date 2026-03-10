@@ -10,13 +10,15 @@ A fast, mobile-friendly **read-only** web dashboard for Home Assistant. Connects
 - 👁️ **Visibility Control** — choose exactly which entities to show (saved in localStorage)
 - 🔍 **Advanced Filtering** — search functionality + domain filters in the entity selector
 - 📉 **Mini Charts** — sparklines for sensors (last 24 hours via HA History API)
-- ⚠️ **Alert Bar** — instant notifications for unavailable devices, open doors, or high temperatures
+- 🔄 **Auto-refresh** — updates every 5 seconds with tab visibility optimization
+- 🖱️ **Drag-and-Drop Sorting** — reorder entity cards directly on the dashboard
+- 🚩 **Priority Settings** — set entities to 'High' priority to get prominent alerts when they are active (e.g., lights ON or doors OPEN)
+- ⚠️ **Alert Bar** — instant notifications for unavailable devices or high-priority items
 - ☀️ **Weather Card** — dedicated display if a `weather.*` entity is selected
 - 📱 **Tablet/Kiosk Mode** — fullscreen layout with larger cards and hidden header for wall-mounted displays
-- 💾 **Backup & Restore** — export and import your dashboard configuration (URL, Token, visibility, favorites) as a JSON file
-- 🚫 **Pure Monitoring** — read-only interface; no accidental device control
+- 💾 **Backup & Restore** — export and import your dashboard configuration as a JSON file
 - 🔄 **Auto-refresh** — updates every 5 seconds with tab visibility optimization
-- 🌙 **Glassmorphism Design** — modern, high-performance UI with CSS blur effects
+- 🌙 **Glassmorphism Design** — modern UI with CSS blur effects
 
 ## 📁 Project Structure
 
@@ -29,7 +31,7 @@ hoas-dash/
 │   ├── app.js          # Entry point (module loader)
 │   ├── api.js          # Home Assistant REST API layer
 │   ├── store.js        # Persistence layer (localStorage)
-│   └── ui.js           # UI logic, card rendering, modals, charts
+│   └── ui.js           # UI logic, card rendering, modals, drag & drop
 ├── proxmox-install.sh  # Automated installation script for Proxmox
 └── README.md
 ```
@@ -41,9 +43,10 @@ hoas-dash/
 3. Click **Connect**
 4. Click the **gear icon** ⚙️ in the top right:
     - Toggle **Visibility** for the entities you want to display
-    - Use **Export** to save your configuration for another device
-    - Use **Import** to restore settings from a backup file
-5. Use the **star icon** on cards to pin entities to your Favorites section
+    - Set the **Priority** (Normal/High) for specific sensors or lights.
+5. On the **Dashboard**:
+    - **Click and drag** any card to change its position within its section.
+    - Use the **star icon** to pin entities to your Favorites section.
 
 > **Note:** All entities are hidden by default. Use the settings menu to toggle visibility for the ones you need.
 

@@ -321,10 +321,11 @@ export class UIManager {
 
             const card = document.createElement('div');
             card.id = `card-${this.safeId(eid)}`;
+            card.dataset.id = eid;
             card.className = `glass-card ${this.getHighlightClass(entity)}`.trim();
 
             if (domain === 'weather' && !isFav) {
-                // Wide weather card
+                // ... (weather card logic)
                 card.className = 'glass-card weather-card';
                 card.innerHTML = `
                     <div class="card-icon" style="width:48px;height:48px;">${this.svgIcons.weather}</div>
@@ -337,11 +338,13 @@ export class UIManager {
                     </div>
                 `;
                 this.containers.weather.appendChild(card);
+                this.setupCardDragging(card, eid);
                 hasWeather = true;
                 return;
             }
 
             card.innerHTML = this.buildCardHtml(entity);
+            this.setupCardDragging(card, eid);
 
             card.querySelector('.fav-btn').addEventListener('click', e => {
                 e.stopPropagation();
@@ -467,11 +470,7 @@ export class UIManager {
 
             const div = document.createElement('div');
             div.className = `entity-list-item ${isChecked ? 'is-selected' : ''}`;
-            div.setAttribute('draggable', 'true');
-            div.dataset.id = entity.entity_id;
-
             div.innerHTML = `
-                <div class="drag-handle">≡</div>
                 <input type="checkbox" id="chk-${sid}" value="${entity.entity_id}" ${isChecked ? 'checked' : ''}>
                 <label for="chk-${sid}" style="cursor:pointer;flex:1;">${name}</label>
                 <div class="priority-toggle ${priority === 1 ? 'high' : ''}" title="Priority: ${priority === 1 ? 'High' : 'Normal'}">
@@ -479,25 +478,6 @@ export class UIManager {
                 </div>
                 <div class="status-badge">${domain}</div>
             `;
-
-            // Drag and drop handlers
-            div.addEventListener('dragstart', e => {
-                e.dataTransfer.setData('text/plain', entity.entity_id);
-                div.classList.add('dragging');
-            });
-            div.addEventListener('dragend', () => div.classList.remove('dragging'));
-            div.addEventListener('dragover', e => {
-                e.preventDefault();
-                const dragging = document.querySelector('.dragging');
-                if (!dragging || dragging === div) return;
-                const bounding = div.getBoundingClientRect();
-                const offset = e.clientY - bounding.top;
-                if (offset > bounding.height / 2) {
-                    div.after(dragging);
-                } else {
-                    div.before(dragging);
-                }
-            });
 
             // Priority toggle hander
             div.querySelector('.priority-toggle').addEventListener('click', e => {
@@ -543,21 +523,100 @@ export class UIManager {
     }
 
     saveEntitySelection() {
-        const selected = [];
-        document.querySelectorAll('#entity-selection-list .entity-list-item').forEach((item, index) => {
+        const selectedIds = [];
+        document.querySelectorAll('#entity-selection-list .entity-list-item').forEach(item => {
             const chk = item.querySelector('input[type="checkbox"]');
             if (chk.checked) {
                 const priority = item.querySelector('.priority-toggle').classList.contains('high') ? 1 : 0;
-                selected.push({
+                selectedIds.push({
                     id: chk.value,
-                    priority: priority,
-                    order: index
+                    priority: priority
                 });
             }
         });
-        this.store.saveVisibleEntities(selected);
+
+        // Merge back into existing order if possible, or append
+        const newVisible = [];
+        // Keep existing order for already visible ones
+        this.store.visibleEntities.forEach(old => {
+            const up = selectedIds.find(s => s.id === old.id);
+            if (up) {
+                newVisible.push({ ...old, priority: up.priority });
+            }
+        });
+        // Add newly selected ones
+        selectedIds.forEach(s => {
+            if (!newVisible.find(nv => nv.id === s.id)) {
+                newVisible.push({ ...s, order: newVisible.length });
+            }
+        });
+
+        this.store.saveVisibleEntities(newVisible);
         document.getElementById('settings-modal').classList.remove('active');
         this.fullRender(this.currentStates);
         this.startAutoRefresh();
+    }
+
+    setupCardDragging(card, eid) {
+        card.setAttribute('draggable', 'true');
+        card.addEventListener('dragstart', e => {
+            e.dataTransfer.setData('text/plain', eid);
+            card.classList.add('dragging');
+            this.stopAutoRefresh(); // Stop refresh while dragging
+        });
+
+        card.addEventListener('dragend', () => {
+            card.classList.remove('dragging');
+            this.saveDashboardOrder();
+            this.startAutoRefresh();
+        });
+
+        card.addEventListener('dragover', e => {
+            e.preventDefault();
+            const dragging = document.querySelector('.glass-card.dragging');
+            if (!dragging || dragging === card) return;
+
+            // Only swap within the same container
+            if (dragging.parentNode !== card.parentNode) return;
+
+            const bounding = card.getBoundingClientRect();
+            const offset = e.clientY - bounding.top;
+            if (offset > bounding.height / 2) {
+                card.after(dragging);
+            } else {
+                card.before(dragging);
+            }
+        });
+    }
+
+    saveDashboardOrder() {
+        const newOrder = [];
+        // We need to extract the current order of visible entities from ALL containers
+        const containers = ['favorites', 'weather', 'lights', 'sensors', 'climate', 'other'];
+        let globalIndex = 0;
+
+        containers.forEach(key => {
+            const container = this.containers[key];
+            if (!container) return;
+            container.querySelectorAll('.glass-card').forEach(card => {
+                const eid = card.id.replace('card-', '').replace(/-/g, '.');
+                // Note: safeId might have been more aggressive. 
+                // Let's actually store the id in a dataset attribute to be safe.
+                const actualEid = card.dataset.id;
+                if (!actualEid) return;
+
+                const existing = this.store.visibleEntities.find(e => e.id === actualEid);
+                if (existing) {
+                    newOrder.push({
+                        ...existing,
+                        order: globalIndex++
+                    });
+                }
+            });
+        });
+
+        if (newOrder.length > 0) {
+            this.store.saveVisibleEntities(newOrder);
+        }
     }
 }

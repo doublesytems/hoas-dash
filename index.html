@@ -2,98 +2,106 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Home Assistant Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" href="data:,"> <!-- prevent favicon request -->
 </head>
 <body>
-
-    <!-- Configuration Screen (Hidden when configured) -->
-    <div id="config-screen" class="screen config-screen active">
-        <div class="glass-panel config-panel">
-            <h1>Setup Dashboard</h1>
-            <p>Enter your Home Assistant details to connect.</p>
-            
-            <div class="form-group">
-                <label for="ha-url">Home Assistant URL</label>
-                <input type="url" id="ha-url" placeholder="http://192.168.1.x:8123 or https://ha.example.com" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="ha-token">Long-Lived Access Token</label>
-                <input type="password" id="ha-token" placeholder="eyJhbGciOiJIUzI1NiIsInR5c..." required>
-            </div>
-            
-            <button id="save-config-btn" class="primary-btn">Connect</button>
-            <p id="config-error" class="error-text hidden"></p>
-        </div>
-    </div>
-
-    <!-- Main Dashboard Screen -->
-    <div id="dashboard-screen" class="screen dashboard-screen hidden">
-        <header class="dashboard-header glass-panel">
-            <div class="header-left">
-                <h1>My Home</h1>
-                <p id="connection-status">Connecting...</p>
-            </div>
-            <div class="header-actions">
-                <button id="visibility-btn" class="icon-btn" title="Edit Visibility" onclick="openVisibilityModal()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                </button>
-                <button id="reconfigure-btn" class="icon-btn" title="Settings">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                </button>
-            </div>
-        </header>
-
-        <main class="dashboard-content">
-            <!-- Sensors Section -->
-            <section class="device-section">
-                <h2>Sensors</h2>
-                <div class="card-grid" id="sensors-container">
-                    <!-- Sensor cards will be injected here -->
+    <div id="app">
+        <!-- Dashboard Screen -->
+        <main id="dashboard-screen" class="hidden">
+            <header>
+                <div class="header-left">
+                    <h1>Home Assistant</h1>
                 </div>
-            </section>
-
-            <!-- Lights Section -->
-            <section class="device-section">
-                <h2>Lights & Switches</h2>
-                <div class="card-grid" id="lights-container">
-                    <!-- Light and switch cards will be injected here -->
+                <div class="header-right">
+                    <div id="connection-status" class="status-indicator">Initializing...</div>
+                    <button id="settings-btn" title="Settings">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    </button>
+                    <button id="kiosk-mode-btn" title="Toggle Kiosk Mode">
+                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+                    </button>
                 </div>
-            </section>
+            </header>
 
-            <!-- Climate/Fans Section -->
-            <section class="device-section">
-                <h2>Ventilation & Climate</h2>
-                <div class="card-grid" id="climate-container">
-                    <!-- Fan cards will be injected here -->
-                </div>
-            </section>
+            <div id="alert-bar"></div>
+
+            <main class="dashboard-content">
+                <section class="dashboard-section" id="section-favorites" style="display:none;">
+                    <h2>Favorites</h2>
+                    <div class="cards-grid" id="favorites-container"></div>
+                </section>
+
+                <section class="dashboard-section" id="section-weather" style="display:none;">
+                    <div class="cards-grid" id="weather-container"></div>
+                </section>
+
+                <section class="dashboard-section" id="section-sensors" style="display:none;">
+                    <h2>Sensors</h2>
+                    <div class="cards-grid" id="sensors-container"></div>
+                </section>
+
+                <section class="dashboard-section" id="section-lights" style="display:none;">
+                    <h2>Lights & Switches</h2>
+                    <div class="cards-grid" id="lights-container"></div>
+                </section>
+
+                <section class="dashboard-section" id="section-climate" style="display:none;">
+                    <h2>Climate</h2>
+                    <div class="cards-grid" id="climate-container"></div>
+                </section>
+
+                <section class="dashboard-section" id="section-other" style="display:none;">
+                    <h2>Other</h2>
+                    <div class="cards-grid" id="other-container"></div>
+                </section>
+            </main>
         </main>
-    </div>
 
+        <!-- Configuration Screen -->
+        <main id="config-screen">
+            <div class="config-box">
+                <h2>Setup Dashboard</h2>
+                <div class="input-group">
+                    <label>Home Assistant URL</label>
+                    <input type="text" id="ha-url" placeholder="http://192.168.1.X:8123" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label>Long-Lived Access Token</label>
+                    <input type="password" id="ha-token" placeholder="eyJhbG..." autocomplete="off">
+                </div>
+                <div id="config-error" class="alert-item hidden" style="margin-bottom:15px;"></div>
+                <button class="primary" id="save-config-btn" style="width:100%;">Connect</button>
+            </div>
+        </main>
 
-    <!-- Visibility Configuration Modal -->
-    <div id="visibility-modal" class="modal">
-        <div class="glass-panel modal-content">
-            <h2>Select Entities to Show</h2>
-            <p>Hide entities you don't want to see on the dashboard.</p>
-            
-            <input type="text" id="entity-search" class="entity-search-input" placeholder="Zoek op naam..." oninput="filterEntityList()">
-            
-            <div class="entity-list-container" id="entity-list-container">
-                <!-- Entity list checkboxes injected here -->
-            </div>
-            
-            <div class="modal-actions">
-                <button id="close-visibility-btn" class="secondary-btn" onclick="closeVisibilityModal()">Cancel</button>
-                <button id="save-visibility-btn" class="primary-btn" onclick="saveVisibilityConfig()">Save Changes</button>
-            </div>
+        <!-- Entity Selection Modal -->
+        <div class="modal-overlay" id="settings-modal">
+             <div class="modal-content">
+                  <div class="modal-header">
+                       <h3>Entity Visibility</h3>
+                  </div>
+                  <div class="modal-body">
+                       <input type="text" id="modal-search" placeholder="Search entities..." />
+                       <div class="entity-filters">
+                            <span class="filter-chip active" data-domain="all">All</span>
+                            <span class="filter-chip" data-domain="sensor">Sensors</span>
+                            <span class="filter-chip" data-domain="light">Lights</span>
+                            <span class="filter-chip" data-domain="switch">Switches</span>
+                       </div>
+                       <div id="entity-selection-list" style="display:flex; flex-direction:column; gap:8px;"></div>
+                  </div>
+                  <div class="modal-footer">
+                       <button id="close-modal-btn">Cancel</button>
+                       <button class="primary" id="save-selection-btn">Save Changes</button>
+                  </div>
+             </div>
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>

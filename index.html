@@ -1,107 +1,122 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Home Assistant Dashboard</title>
+    <meta name="description" content="Read-only Home Assistant monitoring dashboard met glassmorphism dark mode.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="icon" href="data:,"> <!-- prevent favicon request -->
+    <link rel="icon" href="data:,">
 </head>
 <body>
-    <div id="app">
-        <!-- Dashboard Screen -->
-        <main id="dashboard-screen" class="hidden">
-            <header>
-                <div class="header-left">
-                    <h1>Home Assistant</h1>
-                </div>
-                <div class="header-right">
-                    <div id="connection-status" class="status-indicator">Initializing...</div>
-                    <button id="settings-btn" title="Settings">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                    </button>
-                    <button id="kiosk-mode-btn" title="Toggle Kiosk Mode">
-                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
-                    </button>
-                </div>
-            </header>
+<div id="app">
 
-            <div id="alert-bar"></div>
+    <!-- ══════════ DASHBOARD SCREEN ══════════ -->
+    <div id="dashboard-screen" class="hidden">
 
-            <main class="dashboard-content">
-                <section class="dashboard-section" id="section-favorites" style="display:none;">
-                    <h2>Favorites</h2>
-                    <div class="cards-grid" id="favorites-container"></div>
-                </section>
-
-                <section class="dashboard-section" id="section-weather" style="display:none;">
-                    <div class="cards-grid" id="weather-container"></div>
-                </section>
-
-                <section class="dashboard-section" id="section-sensors" style="display:none;">
-                    <h2>Sensors</h2>
-                    <div class="cards-grid" id="sensors-container"></div>
-                </section>
-
-                <section class="dashboard-section" id="section-lights" style="display:none;">
-                    <h2>Lights & Switches</h2>
-                    <div class="cards-grid" id="lights-container"></div>
-                </section>
-
-                <section class="dashboard-section" id="section-climate" style="display:none;">
-                    <h2>Climate</h2>
-                    <div class="cards-grid" id="climate-container"></div>
-                </section>
-
-                <section class="dashboard-section" id="section-other" style="display:none;">
-                    <h2>Other</h2>
-                    <div class="cards-grid" id="other-container"></div>
-                </section>
-            </main>
-        </main>
-
-        <!-- Configuration Screen -->
-        <main id="config-screen">
-            <div class="config-box">
-                <h2>Setup Dashboard</h2>
-                <div class="input-group">
-                    <label>Home Assistant URL</label>
-                    <input type="text" id="ha-url" placeholder="http://192.168.1.X:8123" autocomplete="off">
-                </div>
-                <div class="input-group">
-                    <label>Long-Lived Access Token</label>
-                    <input type="password" id="ha-token" placeholder="eyJhbG..." autocomplete="off">
-                </div>
-                <div id="config-error" class="alert-item hidden" style="margin-bottom:15px;"></div>
-                <button class="primary" id="save-config-btn" style="width:100%;">Connect</button>
+        <header>
+            <div class="header-left">
+                <h1>Home Assistant</h1>
             </div>
-        </main>
+            <div class="header-right">
+                <div id="connection-status" class="status-indicator">Initializing...</div>
+                <button id="settings-btn" title="Entity instellingen">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </button>
+                <button id="kiosk-mode-btn" title="Kiosk/Volledig scherm">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
 
-        <!-- Entity Selection Modal -->
-        <div class="modal-overlay" id="settings-modal">
-             <div class="modal-content">
-                  <div class="modal-header">
-                       <h3>Entity Visibility</h3>
-                  </div>
-                  <div class="modal-body">
-                       <input type="text" id="modal-search" placeholder="Search entities..." />
-                       <div class="entity-filters">
-                            <span class="filter-chip active" data-domain="all">All</span>
-                            <span class="filter-chip" data-domain="sensor">Sensors</span>
-                            <span class="filter-chip" data-domain="light">Lights</span>
-                            <span class="filter-chip" data-domain="switch">Switches</span>
-                       </div>
-                       <div id="entity-selection-list" style="display:flex; flex-direction:column; gap:8px;"></div>
-                  </div>
-                  <div class="modal-footer">
-                       <button id="close-modal-btn">Cancel</button>
-                       <button class="primary" id="save-selection-btn">Save Changes</button>
-                  </div>
-             </div>
+        <!-- Alert balk -->
+        <div id="alert-bar"></div>
+
+        <!-- Hoofd content -->
+        <main class="dashboard-content">
+
+            <section class="dashboard-section" id="section-favorites" style="display:none;">
+                <h2>Favorieten</h2>
+                <div class="cards-grid" id="favorites-container"></div>
+            </section>
+
+            <section class="dashboard-section" id="section-weather" style="display:none;">
+                <h2>Weer</h2>
+                <div class="cards-grid" id="weather-container"></div>
+            </section>
+
+            <section class="dashboard-section" id="section-sensors" style="display:none;">
+                <h2>Sensoren</h2>
+                <div class="cards-grid" id="sensors-container"></div>
+            </section>
+
+            <section class="dashboard-section" id="section-lights" style="display:none;">
+                <h2>Lampen &amp; Schakelaars</h2>
+                <div class="cards-grid" id="lights-container"></div>
+            </section>
+
+            <section class="dashboard-section" id="section-climate" style="display:none;">
+                <h2>Klimaat</h2>
+                <div class="cards-grid" id="climate-container"></div>
+            </section>
+
+            <section class="dashboard-section" id="section-other" style="display:none;">
+                <h2>Overig</h2>
+                <div class="cards-grid" id="other-container"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ══════════ CONFIG SCREEN ══════════ -->
+    <div id="config-screen">
+        <div class="config-box">
+            <h2>Dashboard instellen</h2>
+            <div class="input-group">
+                <label for="ha-url">Home Assistant URL</label>
+                <input type="text" id="ha-url" placeholder="http://192.168.1.X:8123" autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label for="ha-token">Long-Lived Access Token</label>
+                <input type="password" id="ha-token" placeholder="eyJhbG..." autocomplete="off">
+            </div>
+            <div id="config-error" class="alert-item hidden" style="margin-bottom:15px;"></div>
+            <button class="primary" id="save-config-btn" style="width:100%;">Verbinden</button>
         </div>
     </div>
 
-    <script type="module" src="js/app.js"></script>
+    <!-- ══════════ SETTINGS MODAL ══════════ -->
+    <div class="modal-overlay" id="settings-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Zichtbare entiteiten</h3>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="modal-search" placeholder="Zoek entiteit..." autocomplete="off">
+                <div class="entity-filters">
+                    <span class="filter-chip active" data-domain="all">Alle</span>
+                    <span class="filter-chip" data-domain="sensor">Sensoren</span>
+                    <span class="filter-chip" data-domain="light">Lampen</span>
+                    <span class="filter-chip" data-domain="switch">Schakelaars</span>
+                    <span class="filter-chip" data-domain="fan">Ventilatoren</span>
+                    <span class="filter-chip" data-domain="binary_sensor">Binair</span>
+                </div>
+                <div id="entity-selection-list"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="close-modal-btn">Annuleren</button>
+                <button class="primary" id="save-selection-btn">Opslaan</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="module" src="js/app.js"></script>
 </body>
 </html>

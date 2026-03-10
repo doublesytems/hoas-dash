@@ -61,4 +61,30 @@ export class Store {
         localStorage.setItem('ha_kiosk', this.kioskMode ? '1' : '0');
         return this.kioskMode;
     }
+
+    exportSettings() {
+        const settings = {
+            url: localStorage.getItem('ha_url'),
+            token: localStorage.getItem('ha_token'),
+            visible: localStorage.getItem('ha_visible'),
+            favs: localStorage.getItem('ha_favs'),
+            kiosk: localStorage.getItem('ha_kiosk')
+        };
+        return JSON.stringify(settings, null, 2);
+    }
+
+    importSettings(jsonStr) {
+        try {
+            const data = JSON.parse(jsonStr);
+            if (data.url) localStorage.setItem('ha_url', data.url);
+            if (data.token) localStorage.setItem('ha_token', data.token);
+            if (data.visible) localStorage.setItem('ha_visible', data.visible);
+            if (data.favs) localStorage.setItem('ha_favs', data.favs);
+            if (data.kiosk) localStorage.setItem('ha_kiosk', data.kiosk);
+            return true;
+        } catch (e) {
+            console.error("Import failed", e);
+            return false;
+        }
+    }
 }

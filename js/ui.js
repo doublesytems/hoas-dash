@@ -82,6 +82,36 @@ export class UIManager {
             document.body.classList.toggle('kiosk-mode', isKiosk);
         });
 
+        document.getElementById('export-settings-btn').addEventListener('click', () => {
+            const json = this.store.exportSettings();
+            const blob = new Blob([json], { type: 'application/json' });
+            const url  = URL.createObjectURL(blob);
+            const a    = document.createElement('a');
+            a.href = url;
+            a.download = `ha-dash-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        document.getElementById('import-settings-btn').addEventListener('click', () => {
+           document.getElementById('import-file-input').click();
+        });
+
+        document.getElementById('import-file-input').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (re) => {
+                if (this.store.importSettings(re.target.result)) {
+                    alert("Settings imported successfully. Refreshing page...");
+                    window.location.reload();
+                } else {
+                    alert("Failed to import settings. Invalid file format.");
+                }
+            };
+            reader.readAsText(file);
+        });
+
         if (this.store.kioskMode) {
             document.body.classList.add('kiosk-mode');
         }
